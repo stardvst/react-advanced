@@ -1,13 +1,23 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
+
+function reducer({ state }) {
+  switch (state) {
+    case 'NOT_PRESSED':
+      return { state: 'PRESSED_ONCE' };
+    case 'PRESSED_ONCE':
+      return { state: 'PRESSED_TWICE' };
+    case 'PRESSED_TWICE':
+      return { state: 'NOT_PRESSED' };
+  }
+}
 
 const Button = props => {
-  const [counter, setCounter] = useState(0);
+  const [state, dispatch] = useReducer(reducer, { state: 'NOT_PRESSED' });
+
   return (
-    <div
-      style={{ color: props.color, textDecoration: props.underline ? 'underline' : undefined }}
-      onClick={() => setCounter(c => c + props.increment)}
-    >
-      Clicked {counter} times
+    <div style={{ color: props.color, textDecoration: props.underline ? 'underline' : undefined }}>
+      <div onClick={dispatch}>I am a button</div>
+      <div>{state.state}</div>
     </div>
   );
 };
